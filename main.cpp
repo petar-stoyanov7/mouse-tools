@@ -1,6 +1,7 @@
 #include <X11/Xlib.h>
 #include <iostream>
-#include <typeinfo>
+#include <vector>
+#include <bits/stdc++.h>
 
 void print_debug(std::string_view message);
 
@@ -12,75 +13,31 @@ int main() {
         std::cerr << "Cannot open display\n";
         return 1;
     }
+    const Window root = DefaultRootWindow(display);
 
-    Window root = DefaultRootWindow(display);
-
-    // Grab the pointer — intercepts ALL mouse events system-wide
-    // int result = XGrabPointer(
-    //     display,
-    //     root,
-    //     False,
-    //     ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
-    //     GrabModeAsync,
-    //     GrabModeAsync,
-    //     None,
-    //     None,
-    //     CurrentTime
-    // );
-    int result = XGrabPointer(
-        display, root,
-        True,                                           // owner_events
-        ButtonPressMask | ButtonReleaseMask,
-        GrabModeSync, GrabModeAsync,                    // Sync is critical
-        None, None, CurrentTime
-    );
-
-    if (result != GrabSuccess) {
-        std::cerr << "XGrabPointer failed: " << result << std::endl;
-        XCloseDisplay(display);
-        return 1;
-    }
+    /* LMB = 1,RMB = 3, MMB = 2 scrollD = 5,ScrollU = 4,Thumb1 = 8,Thumb2 = 9,Finger1 = 12,Finger2 = 13 */
+    std::vector<int> buttons = {12,13};
 
     print_debug("Myshkin initialized...");
+
+    //todo: implement configurator to get button values
+    for (std::size_t i{0}; i < buttons.size(); i++) {
+        XGrabButton(display, buttons[i], AnyModifier, root, True,
+                ButtonPressMask | ButtonReleaseMask,
+                GrabModeAsync, GrabModeAsync, None, None);
+    }
 
     XEvent event;
     while (true) {
         XNextEvent(display, &event);
 
-        if (event.type == ButtonPress || event.type == ButtonRelease) {
-            int button = event.xbutton.button;
-
-            if (event.xbutton.button == Button1 || event.xbutton.button == Button2 || event.xbutton.button == Button3) {
-                print_debug("click");
-                // Swallow it — do NOT call XAllowEvents
-                // But you must still unfreeze the grab or no more events arrive!
-                XAllowEvents(display, AsyncPointer, event.xbutton.time);
-            } else {
-                // Pass it through to whatever is under the cursor
-                XAllowEvents(display, ReplayPointer, event.xbutton.time);
+        if (event.type == ButtonPress) {
+            if (count(buttons.begin(), buttons.end(), event.xbutton.button) > 0) {
+                std::cout << "Button " << event.xbutton.button << " pressed!" << std::endl;
             }
-            XFlush(display);
-        }
-
-        // if (event.type == ButtonPress) {
-        //     std::cout << "Click intercepted at ("
-        //         << event.xbutton.x_root << ", "
-        //         << event.xbutton.y_root << ") "
-        //         << "Button: " << event.xbutton.button << std::endl;
-        //
-        //     // Do NOT call XAllowEvents — this prevents propagation
-        //     // To allow specific clicks through:
-        //     // XAllowEvents(display, ReplayPointer, CurrentTime);
-        // }
-        //
-        // Press middle button to release grab and exit
-        if (event.type == ButtonPress && event.xbutton.button == Button2) {
-            break;
         }
     }
 
-    XUngrabPointer(display, CurrentTime);
-    XCloseDisplay(display);
     return 0;
 }
 
