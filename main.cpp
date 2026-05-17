@@ -41,12 +41,10 @@ int main() {
 
         //https://gist.github.com/pioz/726474 todo: use for reference
         if (event.type == ButtonPress && conf.hasTrigger(event.xbutton.button)) {
-            std::cout << "Macro detected: button " << event.xbutton.button << " pressed." <<std::endl;
-            Macro macro = conf.macros.at(event.xbutton.button);
+            Macro &macro = conf.macros.at(event.xbutton.button);
+            macro.execute();
         }
     }
-
-    return 0;
 }
 
 void print_debug(const std::string_view message) {

@@ -32,3 +32,28 @@ bool Macro::isValidMacro(nlohmann::json entry) {
     }
     return false;
 }
+
+void Macro::execute() {
+    switch (this->action) {
+        case MACRO_ACTION_SPAM:
+            if (!isActive) {
+                isActive = true;
+                spamButton(); //todo: implement async
+            }
+            break;
+        case MACRO_ACTION_HOLD:
+            std::cout << "hold" << std::endl; //todo: implement
+            break;
+        default:
+            return;
+    }
+}
+
+void Macro::spamButton() {
+    time_t start = std::time(nullptr);
+    while (std::time(nullptr) - start < this->duration) {
+        std::cout << "click " << this->key << std::endl; //todo: replace with actual click
+        sleep(this->delay);
+    }
+    isActive = false;
+}
