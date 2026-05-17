@@ -1,4 +1,5 @@
 #include "MyshConfig.h"
+#include <fstream>
 
 using nlohmann::json;
 
@@ -34,8 +35,6 @@ MyshConfig::MyshConfig(std::string path) {
             return;
         }
 
-        triggers.push_back(macroData[i]["trigger"]);
-
         const Macro macro = Macro(
             macroData[i]["trigger"],
             macroData[i]["action"],
@@ -45,16 +44,12 @@ MyshConfig::MyshConfig(std::string path) {
             macroData[i]["duration"]
         );
 
-        macros.push_back(macro);
+        macros.insert({macroData[i]["trigger"], macro});
     }
 }
 
-bool MyshConfig::hasTrigger(int key) {
-    if (std::ranges::count(triggers, key) > 0) {
-        return true;
-    }
-
-    return false;
+bool MyshConfig::hasTrigger(unsigned int key) {
+    return macros.contains(key);
 }
 
 

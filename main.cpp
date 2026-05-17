@@ -3,6 +3,7 @@
 #include <vector>
 #include <bits/stdc++.h>
 #include "Config/MyshConfig.h"
+#include "Macro/Macro.h"
 
 void print_debug(std::string_view message);
 
@@ -27,8 +28,8 @@ int main() {
     print_debug("Myshkin initialized...");
 
     //todo: implement configurator to get button values
-    for (std::size_t i{0}; i < conf.triggers.size(); i++) {
-        XGrabButton(display, conf.triggers[i], AnyModifier, root, True,
+    for (auto i{conf.macros.begin()}; i != conf.macros.end(); ++i) {
+        XGrabButton(display, i->first, AnyModifier, root, True,
                 ButtonPressMask | ButtonReleaseMask,
                 GrabModeAsync, GrabModeAsync, None, None);
     }
@@ -38,10 +39,10 @@ int main() {
     while (true) {
         XNextEvent(display, &event);
 
-        if (event.type == ButtonPress) {
-            if (conf.hasTrigger(event.xbutton.button)) {
-                std::cout << "Button " << event.xbutton.button << " pressed!" << std::endl;
-            }
+        //https://gist.github.com/pioz/726474 todo: use for reference
+        if (event.type == ButtonPress && conf.hasTrigger(event.xbutton.button)) {
+            std::cout << "Macro detected: button " << event.xbutton.button << " pressed." <<std::endl;
+            Macro macro = conf.macros.at(event.xbutton.button);
         }
     }
 
