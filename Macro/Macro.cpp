@@ -77,7 +77,7 @@ void Macro::toggleSpam() {
 void Macro::spam() {
     //todo: add actual clicks
     while (running_) {
-        std::cout << "spam: " << key << ", type: " << type <<  std::endl;
+        std::cout << "spam mouse clicks --> button:" << key <<  std::endl;
         sleep(delay);
     }
 }

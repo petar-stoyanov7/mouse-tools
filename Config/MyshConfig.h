@@ -6,7 +6,6 @@
 #include <nlohmann/json.hpp>
 
 #include "../Macro/Macro.h"
-#include "./Conf.h"
 
 class MyshConfig {
 public:

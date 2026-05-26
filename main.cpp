@@ -1,9 +1,7 @@
 #include <X11/Xlib.h>
 #include <iostream>
-#include <vector>
 #include <bits/stdc++.h>
 #include "Config/MyshConfig.h"
-#include "Config/Conf.h"
 #include "Macro/Macro.h"
 
 void print_debug(std::string_view message);

@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <atomic>
 #include <thread>
+#include <X11/Xlib.h>
 
 class Macro {
 private:
