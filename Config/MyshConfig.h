@@ -6,10 +6,11 @@
 #include <nlohmann/json.hpp>
 
 #include "../Macro/Macro.h"
+#include "./Conf.h"
 
 class MyshConfig {
 public:
-    std::map<int, Macro> macros;
+    std::map<int, std::unique_ptr<Macro>> macros;
     bool isEnabled{true};
     std::string errorMessage;
 

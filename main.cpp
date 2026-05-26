@@ -3,6 +3,7 @@
 #include <vector>
 #include <bits/stdc++.h>
 #include "Config/MyshConfig.h"
+#include "Config/Conf.h"
 #include "Macro/Macro.h"
 
 void print_debug(std::string_view message);
@@ -29,11 +30,10 @@ int main() {
 
     //todo: implement configurator to get button values
     for (auto i{conf.macros.begin()}; i != conf.macros.end(); ++i) {
-        XGrabButton(display, i->first, AnyModifier, root, True,
+        XGrabButton(display, i->first, AnyModifier, root, True, //todo: refactoring - move buttons to a separate class
                 ButtonPressMask | ButtonReleaseMask,
                 GrabModeAsync, GrabModeAsync, None, None);
     }
-
 
     XEvent event;
     while (true) {
@@ -41,8 +41,7 @@ int main() {
 
         //https://gist.github.com/pioz/726474 todo: use for reference
         if (event.type == ButtonPress && conf.hasTrigger(event.xbutton.button)) {
-            Macro &macro = conf.macros.at(event.xbutton.button);
-            macro.execute();
+            conf.macros[event.xbutton.button]->execute();
         }
     }
 }

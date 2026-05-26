@@ -10,7 +10,8 @@ add_executable(myshkin main.cpp
         Config/MyshConfig.cpp
         Config/MyshConfig.h
         Macro/Macro.cpp
-        Macro/Macro.h)
+        Macro/Macro.h
+)
 
 # Link against X11
 target_link_libraries(myshkin PRIVATE X11)

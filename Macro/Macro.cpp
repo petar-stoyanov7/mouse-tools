@@ -36,10 +36,7 @@ bool Macro::isValidMacro(nlohmann::json entry) {
 void Macro::execute() {
     switch (this->action) {
         case MACRO_ACTION_SPAM:
-            if (!isActive) {
-                isActive = true;
-                spamButton(); //todo: implement async
-            }
+            toggleSpam();
             break;
         case MACRO_ACTION_HOLD:
             std::cout << "hold" << std::endl; //todo: implement
@@ -49,11 +46,38 @@ void Macro::execute() {
     }
 }
 
-void Macro::spamButton() {
-    time_t start = std::time(nullptr);
-    while (std::time(nullptr) - start < this->duration) {
-        std::cout << "click " << this->key << std::endl; //todo: replace with actual click
-        sleep(this->delay);
+void Macro::startSpam() {
+    if (running_) {
+        return;
     }
-    isActive = false;
+
+    running_ = true;
+    thread_ = std::thread(&Macro::spam, this);
+}
+
+void Macro::stopSpam() {
+    if (!running_) {
+        return;
+    }
+
+    running_ = false;
+    if (thread_.joinable()) {
+        thread_.join();
+    }
+}
+
+void Macro::toggleSpam() {
+    if (running_) {
+        stopSpam();
+    } else {
+        startSpam();
+    }
+}
+
+void Macro::spam() {
+    //todo: add actual clicks
+    while (running_) {
+        std::cout << "spam: " << key << ", type: " << type <<  std::endl;
+        sleep(delay);
+    }
 }

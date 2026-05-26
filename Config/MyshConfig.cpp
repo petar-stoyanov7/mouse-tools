@@ -35,23 +35,20 @@ MyshConfig::MyshConfig(std::string path) {
             return;
         }
 
-        const Macro macro = Macro(
+        macros.emplace(
             macroData[i]["trigger"],
-            macroData[i]["action"],
-            macroData[i]["type"],
-            macroData[i]["key"],
-            macroData[i]["delay"],
-            macroData[i]["duration"]
+            std::make_unique<Macro>(
+                macroData[i]["trigger"],
+                macroData[i]["action"],
+                macroData[i]["type"],
+                macroData[i]["key"],
+                macroData[i]["delay"],
+                macroData[i]["duration"]
+            )
         );
-
-        macros.insert({macroData[i]["trigger"], macro});
     }
 }
 
 bool MyshConfig::hasTrigger(unsigned int key) {
     return macros.contains(key);
 }
-
-
-
-
