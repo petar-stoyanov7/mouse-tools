@@ -1,20 +1,21 @@
 #include <X11/Xlib.h>
 #include <iostream>
 #include <bits/stdc++.h>
+
 #include "Config/MyshConfig.h"
 #include "Macro/Macro.h"
+#include "Mouse/X11Mouse.h"
+#include "System/X11System.h"
 
 void print_debug(std::string_view message);
 
 bool debugMode = true; //todo: implement parameters and debugging
 
 int main() {
-    Display* display = XOpenDisplay(nullptr);
-    if (!display) {
-        std::cerr << "Cannot open display\n";
-        return 1;
+    X11System sys;
+    if (!sys.isEnabled) {
+        std::cerr << sys.errorMessage << std::endl;
     }
-    const Window root = DefaultRootWindow(display);
 
     MyshConfig conf;
     if (!conf.isEnabled) {
@@ -28,14 +29,12 @@ int main() {
 
     //todo: implement configurator to get button values
     for (auto i{conf.macros.begin()}; i != conf.macros.end(); ++i) {
-        XGrabButton(display, i->first, AnyModifier, root, True, //todo: refactoring - move buttons to a separate class
-                ButtonPressMask | ButtonReleaseMask,
-                GrabModeAsync, GrabModeAsync, None, None);
+        X11Mouse::grabMouse(sys, i->first);
     }
 
     XEvent event;
     while (true) {
-        XNextEvent(display, &event);
+        XNextEvent(sys.getDisplay(), &event);
 
         //https://gist.github.com/pioz/726474 todo: use for reference
         if (event.type == ButtonPress && conf.hasTrigger(event.xbutton.button)) {
