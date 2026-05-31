@@ -13,10 +13,10 @@ public:
     bool isEnabled{true};
     std::string errorMessage;
     X11System();
+    void grabMouse(int button);
+    void clickMouseButton(int button);
     Display* getDisplay() const;
     Window getWindow() const;
 };
-
-
 
 #endif //MYSHKIN_X11SYSTEM_H

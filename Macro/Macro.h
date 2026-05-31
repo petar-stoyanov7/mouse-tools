@@ -4,7 +4,6 @@
 #include <nlohmann/json.hpp>
 #include <atomic>
 #include <thread>
-#include <X11/Xlib.h>
 
 class Macro {
 private:
@@ -12,14 +11,12 @@ private:
     int action; //type of macro - spam, hold, etc
     int type; //mouse or keyboard
     int key; //key/button to use
-    double delay; //delay between repetitions (for spam)
-    double duration; //max duration for the macro
+    int delay; //delay in milliseconds between repetitions (for spam)
+    int duration; //max duration in seconds for the macro
 
     std::atomic<bool> running_{false};
     std::thread thread_;
 
-    void startSpam();
-    void stopSpam();
     void toggleSpam();
     void spam();
 public:
@@ -31,11 +28,10 @@ public:
     static constexpr int MACRO_ACTION_SPAM {1};
     static constexpr int MACRO_ACTION_HOLD {2};
 
-    Macro(int trigger, int action, int type, int key, double delay, double duration);
+    Macro(int trigger, int action, int type, int key, int delay, int duration);
     static bool isValidMacro(nlohmann::json entry);
 
     void execute();
-
 };
 
 #endif //MYSHKIN_MACRO_H

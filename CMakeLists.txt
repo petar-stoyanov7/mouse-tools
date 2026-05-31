@@ -13,8 +13,6 @@ add_executable(myshkin main.cpp
         Macro/Macro.h
         System/X11System.cpp
         System/X11System.h
-        Mouse/X11Mouse.cpp
-        Mouse/X11Mouse.h
 )
 
 # Link against X11

@@ -1,15 +1,20 @@
 #include "Macro.h"
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
+#include "../System/X11System.h"
+
+extern X11System currentSystem;
 
 Macro::Macro(
     const int trigger,
     const int action,
     const int type,
     const int key,
-    const double delay,
-    const double duration
+    const int delay,
+    const int duration
 ) {
     this->trigger = trigger;
     this->action = action;
@@ -34,7 +39,7 @@ bool Macro::isValidMacro(nlohmann::json entry) {
 }
 
 void Macro::execute() {
-    switch (this->action) {
+    switch (action) {
         case MACRO_ACTION_SPAM:
             toggleSpam();
             break;
@@ -45,39 +50,25 @@ void Macro::execute() {
             return;
     }
 }
-
-void Macro::startSpam() {
-    if (running_) {
-        return;
-    }
-
-    running_ = true;
-    thread_ = std::thread(&Macro::spam, this);
-}
-
-void Macro::stopSpam() {
-    if (!running_) {
-        return;
-    }
-
-    running_ = false;
-    if (thread_.joinable()) {
-        thread_.join();
-    }
-}
-
 void Macro::toggleSpam() {
     if (running_) {
-        stopSpam();
+        running_ = false;
+        if (thread_.joinable()) {
+            thread_.join();
+        }
     } else {
-        startSpam();
+        running_ = true;
+        thread_ = std::thread(&Macro::spam, this);
     }
 }
 
 void Macro::spam() {
     //todo: add actual clicks
     while (running_) {
-        std::cout << "spam mouse clicks --> button:" << key <<  std::endl;
-        sleep(delay);
+        if (type == MACRO_TYPE_MOUSE) {
+            currentSystem.clickMouseButton(key);
+        }
+        // std::cout << "spam mouse clicks --> trigger:" << trigger << " , key: " << key <<  std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
     }
 }
