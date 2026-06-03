@@ -1,5 +1,6 @@
 # Intelij
 .idea
 
-# Python
-.venv
+# Build
+cmake-build-debug
+
