@@ -3,8 +3,8 @@
 
 using nlohmann::json;
 
-MyshConfig::MyshConfig(std::string path) {
-    path = path.empty() ? "../macros.json" : path; //todo: add proper config path
+MyshConfig::MyshConfig(std::string path) : mouse(), keyboard() {
+    path = path.empty() ? "../config.json" : path; //todo: add proper config path
     if (!std::filesystem::exists(path)) {
         isEnabled = false;
         errorMessage = "Configuration file is missing";
@@ -18,10 +18,25 @@ MyshConfig::MyshConfig(std::string path) {
         return;
     }
 
-    json macroData;
+    json config, macroData;
 
     try {
-        macroData = json::parse(f);
+        config = json::parse(f);
+        macroData = config["macros"];
+
+        mouse = Mouse(config["mouse"]);
+        if (mouse.isEnabled == false) {
+            isEnabled = false;
+            errorMessage = "Mouse is not properly configured";
+            return;
+        }
+
+        keyboard = Keyboard(config["keyboard"]);
+        if (keyboard.isEnabled == false) {
+            isEnabled = false;
+            errorMessage = "Keyboard is not properly configured";
+            return;
+        }
     } catch (const json::parse_error e) {
         isEnabled = false;
         errorMessage = e.what();

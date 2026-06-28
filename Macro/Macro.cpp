@@ -51,24 +51,24 @@ void Macro::execute() {
     }
 }
 void Macro::toggleSpam() {
-    if (running_) {
-        running_ = false;
-        if (thread_.joinable()) {
-            thread_.join();
-        }
-    } else {
-        running_ = true;
-        thread_ = std::thread(&Macro::spam, this);
-    }
+    // if (running_) {
+    //     running_ = false;
+    //     if (thread_.joinable()) {
+    //         thread_.join();
+    //     }
+    // } else {
+    //     running_ = true;
+    //     thread_ = std::thread(&Macro::spam, this);
+    // }
 }
 
 void Macro::spam() {
     //todo: add actual clicks
-    while (running_) {
-        if (type == MACRO_TYPE_MOUSE) {
-            currentSystem.clickMouseButton(key);
-        }
-        // std::cout << "spam mouse clicks --> trigger:" << trigger << " , key: " << key <<  std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
-    }
+    // while (running_) {
+    //     if (type == MACRO_TYPE_MOUSE) {
+    //         currentSystem.clickMouseButton(key);
+    //     }
+    //     // std::cout << "spam mouse clicks --> trigger:" << trigger << " , key: " << key <<  std::endl;
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
+    // }
 }

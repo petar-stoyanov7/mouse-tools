@@ -1,0 +1,30 @@
+{
+  "mouse": "/dev/input/event5",
+  "keyboard": "/dev/input/event3",
+  "macros": [
+    {
+      "trigger": 13,
+      "action": 1,
+      "type": 1,
+      "key": 1,
+      "delay": 100,
+      "duration": 5
+    },
+    {
+      "trigger": 9,
+      "action": 2,
+      "type": 2,
+      "key": 1,
+      "delay": 0,
+      "duration": 60
+    },
+    {
+      "trigger": 12,
+      "action": 1,
+      "type": 2,
+      "key": 1,
+      "delay": 100,
+      "duration": 20
+    }
+  ]
+}

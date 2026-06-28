@@ -3,7 +3,7 @@ project(myshkin)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Find the X11 package
+# Find the X11 package todo: remove
 find_package(X11 REQUIRED)
 
 add_executable(myshkin main.cpp
@@ -11,9 +11,13 @@ add_executable(myshkin main.cpp
         Config/MyshConfig.h
         Macro/Macro.cpp
         Macro/Macro.h
-        System/X11System.cpp
+        System/X11System.cpp #todo remove X11
         System/X11System.h
+        Keyboard/Keyboard.cpp
+        Keyboard/Keyboard.h
+        Mouse/Mouse.cpp
+        Mouse/Mouse.h
 )
 
 # Link against X11
-target_link_libraries(myshkin PRIVATE X11)
+target_link_libraries(myshkin PRIVATE X11) #todo remove X11
