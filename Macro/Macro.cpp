@@ -4,10 +4,6 @@
 #include <chrono>
 #include <thread>
 
-#include "../System/X11System.h"
-
-extern X11System currentSystem;
-
 Macro::Macro(
     const int trigger,
     const int action,
@@ -23,6 +19,8 @@ Macro::Macro(
     this->delay = delay;
     this->duration = duration;
 }
+
+//todo: get mouse in macro
 
 bool Macro::isValidMacro(nlohmann::json entry) {
     if (
@@ -44,6 +42,7 @@ void Macro::execute() {
             toggleSpam();
             break;
         case MACRO_ACTION_HOLD:
+            toggleHold();
             std::cout << "hold" << std::endl; //todo: implement
             break;
         default:
@@ -51,24 +50,43 @@ void Macro::execute() {
     }
 }
 void Macro::toggleSpam() {
-    // if (running_) {
-    //     running_ = false;
-    //     if (thread_.joinable()) {
-    //         thread_.join();
-    //     }
-    // } else {
-    //     running_ = true;
-    //     thread_ = std::thread(&Macro::spam, this);
-    // }
+    std::cout << "toggle spam" << std::endl;
+    if (running_) {
+        running_ = false;
+        if (thread_.joinable()) {
+            thread_.join();
+        }
+    } else {
+        running_ = true;
+        thread_ = std::thread(&Macro::spam, this);
+    }
+}
+
+void Macro::toggleHold() {
+    if (running_) {
+        running_ = false;
+        if (thread_.joinable()) {
+            thread_.join();
+        }
+    } else {
+        running_ = true;
+        thread_ = std::thread(&Macro::hold, this);
+    }
 }
 
 void Macro::spam() {
-    //todo: add actual clicks
-    // while (running_) {
-    //     if (type == MACRO_TYPE_MOUSE) {
-    //         currentSystem.clickMouseButton(key);
-    //     }
-    //     // std::cout << "spam mouse clicks --> trigger:" << trigger << " , key: " << key <<  std::endl;
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
-    // }
+    while (running_) {
+        if (type == MACRO_TYPE_MOUSE) {
+            std::cout << "mouse click: " << key << std::endl;
+            //todo: add mouse click
+        }
+        //todo: implement keyboard
+        // std::cout << "spam mouse clicks --> trigger:" << trigger << " , key: " << key <<  std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
+    }
+}
+
+void Macro::hold() {
+    std::cout << "hold key: " << key << std::endl;
+    //todo: implement
 }

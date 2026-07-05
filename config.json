@@ -1,9 +1,9 @@
 {
-  "mouse": "/dev/input/event5",
-  "keyboard": "/dev/input/event3",
+  "mouse": "Logitech G502 HERO Gaming Mouse",
+  "keyboard": "SONiX USB DEVICE",
   "macros": [
     {
-      "trigger": 13,
+      "trigger": 280,
       "action": 1,
       "type": 1,
       "key": 1,
@@ -11,7 +11,7 @@
       "duration": 5
     },
     {
-      "trigger": 9,
+      "trigger": 279,
       "action": 2,
       "type": 2,
       "key": 1,
@@ -19,7 +19,7 @@
       "duration": 60
     },
     {
-      "trigger": 12,
+      "trigger": 276,
       "action": 1,
       "type": 2,
       "key": 1,

@@ -6,13 +6,14 @@
 #include <nlohmann/json.hpp>
 
 #include "../Macro/Macro.h"
-#include "../Mouse/Mouse.h"
-#include "../Keyboard/Keyboard.h"
+#include "../Device/Mouse.h"
+#include "../Device/Keyboard.h"
+
+extern Mouse mouse;
+extern Keyboard keyboard;
 
 class MyshConfig {
 public:
-    Mouse mouse;
-    Keyboard keyboard;
     std::map<int, std::unique_ptr<Macro>> macros;
     bool isEnabled{true};
     std::string errorMessage;

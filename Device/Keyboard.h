@@ -1,15 +1,15 @@
 #ifndef MYSHKIN_KEYBOARD_H
 #define MYSHKIN_KEYBOARD_H
-#include <fcntl.h>
 #include <string>
 
+#include "./Device.h"
 
-class Keyboard {
+class Keyboard : Device {
 public:
-    int fd;
     bool isEnabled;
-    Keyboard(std::string devId);
+    Keyboard(std::string deviceName);
     Keyboard();
+    libevdev* getDevice() const;
 };
 
 

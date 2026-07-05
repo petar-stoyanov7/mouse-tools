@@ -4,6 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <atomic>
 #include <thread>
+#include "../Device/Mouse.h"
+
+extern Mouse mouse;
 
 class Macro {
 private:
@@ -18,7 +21,9 @@ private:
     std::thread thread_;
 
     void toggleSpam();
+    void toggleHold();
     void spam();
+    void hold();
 public:
     int trigger; //the button/combination to trigger the macro
 

@@ -5,19 +5,19 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Find the X11 package todo: remove
 find_package(X11 REQUIRED)
+pkg_check_modules(libevdev2 REQUIRED)
 
 add_executable(myshkin main.cpp
         Config/MyshConfig.cpp
         Config/MyshConfig.h
         Macro/Macro.cpp
         Macro/Macro.h
-        System/X11System.cpp #todo remove X11
-        System/X11System.h
-        Keyboard/Keyboard.cpp
-        Keyboard/Keyboard.h
-        Mouse/Mouse.cpp
-        Mouse/Mouse.h
+        Device/Keyboard.cpp
+        Device/Keyboard.h
+        Device/Mouse.cpp
+        Device/Mouse.h
+        Device/Device.cpp
+        Device/Device.h
 )
 
-# Link against X11
-target_link_libraries(myshkin PRIVATE X11) #todo remove X11
+target_link_libraries(myshkin PRIVATE evdev2)

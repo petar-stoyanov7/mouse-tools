@@ -3,7 +3,7 @@
 
 using nlohmann::json;
 
-MyshConfig::MyshConfig(std::string path) : mouse(), keyboard() {
+MyshConfig::MyshConfig(std::string path) {
     path = path.empty() ? "../config.json" : path; //todo: add proper config path
     if (!std::filesystem::exists(path)) {
         isEnabled = false;
