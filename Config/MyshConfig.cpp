@@ -24,19 +24,7 @@ MyshConfig::MyshConfig(std::string path) {
         config = json::parse(f);
         macroData = config["macros"];
 
-        mouse = Mouse(config["mouse"]);
-        if (mouse.isEnabled == false) {
-            isEnabled = false;
-            errorMessage = "Mouse is not properly configured";
-            return;
-        }
-
-        keyboard = Keyboard(config["keyboard"]);
-        if (keyboard.isEnabled == false) {
-            isEnabled = false;
-            errorMessage = "Keyboard is not properly configured";
-            return;
-        }
+        mouse_name = config["mouse"].get<std::string>();
     } catch (const json::parse_error e) {
         isEnabled = false;
         errorMessage = e.what();
@@ -66,4 +54,8 @@ MyshConfig::MyshConfig(std::string path) {
 
 bool MyshConfig::hasTrigger(unsigned int key) {
     return macros.contains(key);
+}
+
+Mouse MyshConfig::getMouse() {
+    return Mouse(mouse_name);
 }

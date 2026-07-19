@@ -20,8 +20,6 @@ Macro::Macro(
     this->duration = duration;
 }
 
-//todo: get mouse in macro
-
 bool Macro::isValidMacro(nlohmann::json entry) {
     if (
         entry["trigger"].is_number() &&
@@ -58,7 +56,11 @@ void Macro::toggleSpam() {
         }
     } else {
         running_ = true;
-        thread_ = std::thread(&Macro::spam, this);
+        if (type == MACRO_TYPE_MOUSE) {
+            thread_ = std::thread(&Macro::mouse_spam, this);
+        } else if (type == MACRO_TYPE_KEYBOARD) {
+            thread_ = std::thread(&Macro::keyboard_spam, this);
+        }
     }
 }
 
@@ -74,16 +76,23 @@ void Macro::toggleHold() {
     }
 }
 
-void Macro::spam() {
+void Macro::mouse_spam() {
     while (running_) {
-        if (type == MACRO_TYPE_MOUSE) {
-            std::cout << "mouse click: " << key << std::endl;
-            //todo: add mouse click
-        }
-        //todo: implement keyboard
-        // std::cout << "spam mouse clicks --> trigger:" << trigger << " , key: " << key <<  std::endl;
+        v_mouse.click(key, true);
+        usleep(150);
+        v_mouse.click(key, false);
+
         std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
     }
+}
+
+void Macro::keyboard_spam() {
+    while (running_) {
+        std::cout << "Keyboard is not yet supported" << std::endl; //todo: support!
+        break;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
+    }
+
 }
 
 void Macro::hold() {

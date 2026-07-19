@@ -20,7 +20,9 @@ public:
 
     MyshConfig(std::string path = "");
     bool hasTrigger(unsigned int key);
-
+    Mouse getMouse();
+private:
+    std::string mouse_name;
 };
 
 #endif //MYSHKIN_MYSHCONFIG_H

@@ -10,7 +10,9 @@ struct libevdev *Device::find_device_by_name(const std::string &name) {
 
     for (int i = 0;; i++) {
         std::string path = "/dev/input/event" + std::to_string(i);
-        int fd = open (path.c_str(), O_RDONLY | O_NONBLOCK);
+        int fd {
+            open (path.c_str(), O_RDONLY | O_NONBLOCK)
+        };
         if (fd == -1) {
             failed++;
         }
@@ -23,7 +25,6 @@ struct libevdev *Device::find_device_by_name(const std::string &name) {
             libevdev_free(dev);
             dev = nullptr;
         }
-        close(fd);
 
         if (failed > 3) {
             break;
@@ -41,4 +42,8 @@ void Device::printDeviceDebug(std::string type) {
     if (debugMode) {
         std::cout << type << ": " << libevdev_get_name(dev) <<  std::endl;
     }
+}
+
+void Device::close() {
+    libevdev_free(dev);
 }

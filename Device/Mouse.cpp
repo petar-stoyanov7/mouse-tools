@@ -19,3 +19,7 @@ Mouse::Mouse() {
 libevdev* Mouse::getDevice() const {
     return Device::getDevice();
 }
+
+void Mouse::close() {
+    Device::close();
+}

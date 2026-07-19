@@ -4,9 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <atomic>
 #include <thread>
-#include "../Device/Mouse.h"
+#include "../VirtualDevice/VirtualMouse.h"
 
-extern Mouse mouse;
+extern VirtualMouse v_mouse;
 
 class Macro {
 private:
@@ -22,7 +22,8 @@ private:
 
     void toggleSpam();
     void toggleHold();
-    void spam();
+    void mouse_spam();
+    void keyboard_spam();
     void hold();
 public:
     int trigger; //the button/combination to trigger the macro

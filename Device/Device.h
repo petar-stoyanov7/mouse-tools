@@ -2,6 +2,7 @@
 #define MYSHKIN_DEVICE_H
 
 #include <libevdev-1.0/libevdev/libevdev.h>
+#include <libevdev-1.0/libevdev/libevdev-uinput.h>
 #include <fcntl.h>
 #include <string>
 #include <unistd.h>
@@ -16,6 +17,7 @@ protected:
 
 public:
     struct libevdev* getDevice() const;
+    void close();
 };
 
 
