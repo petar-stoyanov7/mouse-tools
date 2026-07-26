@@ -11,14 +11,12 @@ add_executable(myshkin main.cpp
         Config/MyshConfig.h
         Macro/Macro.cpp
         Macro/Macro.h
-        Device/Keyboard.cpp
-        Device/Keyboard.h
-        Device/Mouse.cpp
-        Device/Mouse.h
-        Device/Device.cpp
-        Device/Device.h
+        Mouse/Mouse.cpp
+        Mouse/Mouse.h
         VirtualDevice/VirtualMouse.cpp
         VirtualDevice/VirtualMouse.h
+        VirtualDevice/VirtualKeyboard.cpp
+        VirtualDevice/VirtualKeyboard.h
 )
 
 target_include_directories(myshkin PRIVATE ${LIBEVDEV_INCLUDE_DIRS})

@@ -1,9 +1,32 @@
-#include "Device.h"
+#include "Mouse.h"
 
-#include <iostream>
-#include <ostream>
+Mouse::Mouse(const std::string &deviceName) {
+    dev = find_mouse_by_name(deviceName);
+    if (dev == nullptr) {
+        isEnabled = false;
+        return;
+    }
 
-struct libevdev *Device::find_device_by_name(const std::string &name) {
+    isEnabled = true;
+    printMouseDebug("Mouse");
+}
+
+Mouse::Mouse() {
+    dev = nullptr;
+    isEnabled = false;
+}
+
+libevdev* Mouse::getMouse() const {
+    return dev;
+}
+
+void Mouse::printMouseDebug(std::string type) {
+    if (debugMode) {
+        std::cout << type << ": " << libevdev_get_name(dev) <<  std::endl;
+    }
+}
+
+struct libevdev *Mouse::find_mouse_by_name(const std::string &name) {
     struct libevdev *dev = nullptr;
 
     int failed = 0;
@@ -34,16 +57,6 @@ struct libevdev *Device::find_device_by_name(const std::string &name) {
     return dev;
 }
 
-libevdev* Device::getDevice() const {
-    return dev;
-}
-
-void Device::printDeviceDebug(std::string type) {
-    if (debugMode) {
-        std::cout << type << ": " << libevdev_get_name(dev) <<  std::endl;
-    }
-}
-
-void Device::close() {
+void Mouse::close() {
     libevdev_free(dev);
 }

@@ -6,11 +6,9 @@
 #include <nlohmann/json.hpp>
 
 #include "../Macro/Macro.h"
-#include "../Device/Mouse.h"
-#include "../Device/Keyboard.h"
+#include "../Mouse/Mouse.h"
 
 extern Mouse mouse;
-extern Keyboard keyboard;
 
 class MyshConfig {
 public:

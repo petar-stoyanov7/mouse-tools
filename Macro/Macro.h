@@ -4,9 +4,12 @@
 #include <nlohmann/json.hpp>
 #include <atomic>
 #include <thread>
+
+#include "../VirtualDevice/VirtualKeyboard.h"
 #include "../VirtualDevice/VirtualMouse.h"
 
 extern VirtualMouse v_mouse;
+extern VirtualKeyboard v_keyboard;
 
 class Macro {
 private:

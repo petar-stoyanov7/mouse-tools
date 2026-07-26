@@ -7,7 +7,8 @@
 
 #include "Config/MyshConfig.h"
 #include "Macro/Macro.h"
-#include "Device/Mouse.h"
+#include "Mouse/Mouse.h"
+#include "VirtualDevice/VirtualKeyboard.h"
 #include "VirtualDevice/VirtualMouse.h"
 
 void print_debug(std::string_view message);
@@ -15,6 +16,7 @@ void print_debug(std::string_view message);
 bool debugMode = true; //todo: implement parameters and debugging
 
 VirtualMouse v_mouse;
+VirtualKeyboard v_keyboard;
 input_event ev{};
 
 int main() {
@@ -57,7 +59,7 @@ int main() {
     };
     const auto flags = LIBEVDEV_READ_FLAG_NORMAL | LIBEVDEV_READ_FLAG_BLOCKING;
 
-    while (status = libevdev_next_event(mouse.getDevice(), flags, &ev), !is_error(status)) {
+    while (status = libevdev_next_event(mouse.getMouse(), flags, &ev), !is_error(status)) {
         if (!has_next_event(status)) {
             continue;
         }
@@ -67,7 +69,7 @@ int main() {
         }
 
         if (ev.type == EV_KEY) {
-            std::cout << "b: " << BTN_LEFT << std::endl;
+            //std::cout << "b: " << KEY_A << std::endl; //todo debug message to show key code
             if (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) {
                 continue;
             }

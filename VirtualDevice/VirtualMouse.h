@@ -1,20 +1,10 @@
 #ifndef MYSHKIN_VIRTUALMOUSE_H
 #define MYSHKIN_VIRTUALMOUSE_H
-#include "../Device/Device.h"
 
-#include <iostream>
-#include <string>
+#include <libevdev-1.0/libevdev/libevdev-uinput.h>
 #include <mutex>
-#include <set>
-#include <thread>
-#include <chrono>
-#include <atomic>
-#include <unistd.h>
-#include <fcntl.h>
-#include <grp.h>
 
-
-class VirtualMouse : Device {
+class VirtualMouse {
 public:
     VirtualMouse();
     ~VirtualMouse();

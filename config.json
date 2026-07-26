@@ -1,6 +1,5 @@
 {
   "mouse": "Logitech G502 HERO Gaming Mouse",
-  "keyboard": "SONiX USB DEVICE",
   "macros": [
     {
       "trigger": 280,
@@ -12,9 +11,9 @@
     },
     {
       "trigger": 279,
-      "action": 2,
+      "action": 1,
       "type": 2,
-      "key": 1,
+      "key": 56,
       "delay": 0,
       "duration": 60
     },

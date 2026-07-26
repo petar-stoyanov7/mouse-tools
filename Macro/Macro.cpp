@@ -79,7 +79,7 @@ void Macro::toggleHold() {
 void Macro::mouse_spam() {
     while (running_) {
         v_mouse.click(key, true);
-        usleep(150);
+        usleep(1);
         v_mouse.click(key, false);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
@@ -88,8 +88,10 @@ void Macro::mouse_spam() {
 
 void Macro::keyboard_spam() {
     while (running_) {
-        std::cout << "Keyboard is not yet supported" << std::endl; //todo: support!
-        break;
+        v_keyboard.key_press(key, true);
+        usleep(1);
+        v_keyboard.key_press(key, false);
+
         std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
     }
 
