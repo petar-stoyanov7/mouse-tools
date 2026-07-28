@@ -9,14 +9,15 @@
 #include "../Mouse/Mouse.h"
 
 extern Mouse mouse;
+extern VirtualDevice v_device;
 
-class MyshConfig {
+class Config {
 public:
     std::map<int, std::unique_ptr<Macro>> macros;
     bool isEnabled{true};
     std::string errorMessage;
 
-    MyshConfig(std::string path = "");
+    Config(std::string path = "");
     bool hasTrigger(unsigned int key);
     Mouse getMouse();
 private:

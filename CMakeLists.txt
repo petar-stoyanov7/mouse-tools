@@ -7,16 +7,14 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(LIBEVDEV REQUIRED libevdev)
 
 add_executable(myshkin main.cpp
-        Config/MyshConfig.cpp
-        Config/MyshConfig.h
+        Config/Config.cpp
+        Config/Config.h
         Macro/Macro.cpp
         Macro/Macro.h
         Mouse/Mouse.cpp
         Mouse/Mouse.h
-        VirtualDevice/VirtualMouse.cpp
-        VirtualDevice/VirtualMouse.h
-        VirtualDevice/VirtualKeyboard.cpp
-        VirtualDevice/VirtualKeyboard.h
+        VirtualDevice/VirtualDevice.cpp
+        VirtualDevice/VirtualDevice.h
 )
 
 target_include_directories(myshkin PRIVATE ${LIBEVDEV_INCLUDE_DIRS})

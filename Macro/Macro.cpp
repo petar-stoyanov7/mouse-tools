@@ -78,9 +78,9 @@ void Macro::toggleHold() {
 
 void Macro::mouse_spam() {
     while (running_) {
-        v_mouse.click(key, true);
+        v_device.press(key, true);
         usleep(1);
-        v_mouse.click(key, false);
+        v_device.press(key, false);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
     }
@@ -88,9 +88,9 @@ void Macro::mouse_spam() {
 
 void Macro::keyboard_spam() {
     while (running_) {
-        v_keyboard.key_press(key, true);
+        v_device.press(key, true);
         usleep(1);
-        v_keyboard.key_press(key, false);
+        v_device.press(key, false);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
     }

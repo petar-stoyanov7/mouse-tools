@@ -3,13 +3,15 @@
 
 #include <libevdev-1.0/libevdev/libevdev-uinput.h>
 #include <mutex>
+#include <vector>
 
-class VirtualMouse {
+class VirtualDevice {
 public:
-    VirtualMouse();
-    ~VirtualMouse();
+    VirtualDevice();
+    ~VirtualDevice();
+    explicit VirtualDevice(const std::vector<int> &macroKeys);
     void move(int x, int y);
-    void click(int key, bool is_down);
+    void press(int key, bool is_down);
     void scroll(int val);
 private:
     bool is_enabled = false;

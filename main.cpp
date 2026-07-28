@@ -5,23 +5,22 @@
 #include <libevdev-1.0/libevdev/libevdev.h>
 #include <grp.h>
 
-#include "Config/MyshConfig.h"
+#include "Config/Config.h"
 #include "Macro/Macro.h"
 #include "Mouse/Mouse.h"
 #include "VirtualDevice/VirtualKeyboard.h"
-#include "VirtualDevice/VirtualMouse.h"
+#include "VirtualDevice/VirtualDevice.h"
 
 void print_debug(std::string_view message);
 
 bool debugMode = true; //todo: implement parameters and debugging
 
-VirtualMouse v_mouse;
-VirtualKeyboard v_keyboard;
+VirtualDevice v_device;
 input_event ev{};
 
 int main() {
     Mouse mouse;
-    MyshConfig config;
+    Config config;
     if (config.isEnabled == false) {
         std::cerr << config.errorMessage << std::endl;
         return 1;

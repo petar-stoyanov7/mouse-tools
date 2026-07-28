@@ -5,11 +5,9 @@
 #include <atomic>
 #include <thread>
 
-#include "../VirtualDevice/VirtualKeyboard.h"
-#include "../VirtualDevice/VirtualMouse.h"
+#include "../VirtualDevice/VirtualDevice.h"
 
-extern VirtualMouse v_mouse;
-extern VirtualKeyboard v_keyboard;
+extern VirtualDevice v_device;
 
 class Macro {
 private:
