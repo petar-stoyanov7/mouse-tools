@@ -8,7 +8,6 @@
 #include "Config/Config.h"
 #include "Macro/Macro.h"
 #include "Mouse/Mouse.h"
-#include "VirtualDevice/VirtualKeyboard.h"
 #include "VirtualDevice/VirtualDevice.h"
 
 void print_debug(std::string_view message);
