@@ -1,0 +1,30 @@
+{
+  "mouse": "Logitech G502 HERO Gaming Mouse",
+  "device": "Virtual Input Device",
+  "macros": [
+    {
+      "trigger": 280,
+      "action": 1,
+      "type": 1,
+      "key": 272,
+      "delay": 50,
+      "duration": 5
+    },
+    {
+      "trigger": 279,
+      "action": 1,
+      "type": 2,
+      "key": 56,
+      "delay": 50,
+      "duration": 60
+    },
+    {
+      "trigger": 276,
+      "action": 1,
+      "type": 2,
+      "key": 1,
+      "delay": 100,
+      "duration": 20
+    }
+  ]
+}

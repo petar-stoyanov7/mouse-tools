@@ -1,45 +1,85 @@
-#include <X11/Xlib.h>
 #include <iostream>
 #include <bits/stdc++.h>
+#include <linux/input.h>
+#include <unistd.h>
+#include <libevdev-1.0/libevdev/libevdev.h>
+#include <grp.h>
 
-#include "Config/MyshConfig.h"
+#include "Config/Config.h"
 #include "Macro/Macro.h"
-#include "System/X11System.h"
+#include "Mouse/Mouse.h"
+#include "VirtualDevice/VirtualKeyboard.h"
+#include "VirtualDevice/VirtualDevice.h"
 
 void print_debug(std::string_view message);
 
-
 bool debugMode = true; //todo: implement parameters and debugging
-X11System currentSystem;
+
+VirtualDevice v_device;
+input_event ev{};
 
 int main() {
-    if (!currentSystem.isEnabled) {
-        std::cerr << currentSystem.errorMessage << std::endl;
-    }
-
-    MyshConfig conf;
-    if (!conf.isEnabled) {
-        std::cerr << conf.errorMessage << std::endl;
+    Mouse mouse;
+    Config config;
+    if (config.isEnabled == false) {
+        std::cerr << config.errorMessage << std::endl;
         return 1;
     }
 
-    /* LMB = 1,RMB = 3, MMB = 2 scrollD = 5,ScrollU = 4,Thumb1 = 8,Thumb2 = 9,Finger1 = 12,Finger2 = 13 */
+    //workaround to run for normal user
+    auto group = getgrnam("input");
+    if (group == nullptr) {
+        std::cerr << "get group name failed" << std::endl;
+        return 1;
+    }
+    int oldGroupId = getgid();
+    if (setgid(group->gr_gid) < 0) {
+        std::cerr << "Couldn't change group to input" << std::endl;
+        return 1;
+    }
+
+    mouse = config.getMouse();
+    if (mouse.isEnabled == false) {
+        std::cerr << "Could not initialize mouse" << std::endl;
+        return 1;
+    }
+
+    if (setgid(oldGroupId) < 0) {
+        std::cerr << "Couldn't change to old group" << std::endl;
+        return 1;
+    }
 
     print_debug("Myshkin initialized...");
 
-    for (auto i{conf.macros.begin()}; i != conf.macros.end(); ++i) {
-        currentSystem.grabMouse(i->first);
-    }
+    int status = 0;
+    auto isError = [](int v) { return v < 0 && v != -EAGAIN; };
+    auto hasNextEvent = [](int v) {
+        return v >= 0;
+    };
+    const auto flags = LIBEVDEV_READ_FLAG_NORMAL | LIBEVDEV_READ_FLAG_BLOCKING;
 
-    XEvent event;
-    while (true) {
-        XNextEvent(currentSystem.getDisplay(), &event);
+    while (status = libevdev_next_event(mouse.getMouse(), flags, &ev), !isError(status)) {
+        if (!hasNextEvent(status)) {
+            continue;
+        }
 
-        //https://gist.github.com/pioz/726474 todo: use for reference
-        if (event.type == ButtonPress && conf.hasTrigger(event.xbutton.button)) {
-            conf.macros[event.xbutton.button]->execute();
+        if (ev.type != EV_KEY) {
+            continue;
+        }
+
+        if (ev.type == EV_KEY) {
+            //std::cout << "b: " << KEY_A << std::endl; //todo debug message to show key code
+            if (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) {
+                continue;
+            }
+            if (ev.value == 0 && config.hasTrigger(ev.code)) {
+                std::cout << "Real mouse click: " << ev.code << std::endl;
+                config.macros[ev.code]->execute();
+            }
         }
     }
+
+    mouse.close();
 }
 
 void print_debug(const std::string_view message) {

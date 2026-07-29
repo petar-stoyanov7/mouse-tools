@@ -5,6 +5,11 @@
 #include <atomic>
 #include <thread>
 
+#include "../VirtualDevice/VirtualDevice.h"
+
+extern VirtualDevice v_device;
+void print_debug(const std::string_view message);
+
 class Macro {
 private:
     bool isActive{false};
@@ -18,7 +23,10 @@ private:
     std::thread thread_;
 
     void toggleSpam();
-    void spam();
+    void toggleHold();
+    void mouse_spam();
+    void keyboard_spam();
+    void hold();
 public:
     int trigger; //the button/combination to trigger the macro
 

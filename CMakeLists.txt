@@ -3,17 +3,19 @@ project(myshkin)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Find the X11 package
-find_package(X11 REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(LIBEVDEV REQUIRED libevdev)
 
 add_executable(myshkin main.cpp
-        Config/MyshConfig.cpp
-        Config/MyshConfig.h
+        Config/Config.cpp
+        Config/Config.h
         Macro/Macro.cpp
         Macro/Macro.h
-        System/X11System.cpp
-        System/X11System.h
+        Mouse/Mouse.cpp
+        Mouse/Mouse.h
+        VirtualDevice/VirtualDevice.cpp
+        VirtualDevice/VirtualDevice.h
 )
 
-# Link against X11
-target_link_libraries(myshkin PRIVATE X11)
+target_include_directories(myshkin PRIVATE ${LIBEVDEV_INCLUDE_DIRS})
+target_link_libraries(myshkin PRIVATE ${LIBEVDEV_LIBRARIES})

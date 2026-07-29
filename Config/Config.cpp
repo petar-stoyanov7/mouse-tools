@@ -1,10 +1,10 @@
-#include "MyshConfig.h"
+#include "Config.h"
 #include <fstream>
 
 using nlohmann::json;
 
-MyshConfig::MyshConfig(std::string path) {
-    path = path.empty() ? "../macros.json" : path; //todo: add proper config path
+Config::Config(std::string path) {
+    path = path.empty() ? "../config.json" : path; //todo: add proper config path
     if (!std::filesystem::exists(path)) {
         isEnabled = false;
         errorMessage = "Configuration file is missing";
@@ -18,16 +18,20 @@ MyshConfig::MyshConfig(std::string path) {
         return;
     }
 
-    json macroData;
+    json config, macroData;
 
     try {
-        macroData = json::parse(f);
+        config = json::parse(f);
+        macroData = config["macros"];
+
+        mouseName = config["mouse"].get<std::string>();
     } catch (const json::parse_error e) {
         isEnabled = false;
         errorMessage = e.what();
         return;
     }
 
+    std::vector<int> macroKeys;
     for (int i{0}; i < macroData.size(); ++i) {
         if (!Macro::isValidMacro(macroData[i])) {
             errorMessage = "Invalid macro entry: " + macroData[i].get<std::string>();
@@ -46,9 +50,18 @@ MyshConfig::MyshConfig(std::string path) {
                 macroData[i]["duration"]
             )
         );
+
+        macroKeys.push_back(macroData[i]["key"]);
     }
+
+    v_device.~VirtualDevice();
+    new(&v_device) VirtualDevice(macroKeys);
 }
 
-bool MyshConfig::hasTrigger(unsigned int key) {
+bool Config::hasTrigger(unsigned int key) {
     return macros.contains(key);
+}
+
+Mouse Config::getMouse() {
+    return Mouse(mouseName);
 }
