@@ -11,14 +11,12 @@ public:
     ~VirtualDevice();
     explicit VirtualDevice(const std::vector<int> &macroKeys);
     void move(int x, int y);
-    void press(int key, bool is_down);
+    void press(int key, bool isDown);
     void scroll(int val);
 private:
-    bool is_enabled = false;
+    bool isEnabled = false;
     struct libevdev_uinput* m_uinput = nullptr;
     std::mutex m_mouseMutex;
 };
-
-
 
 #endif //MYSHKIN_VIRTUALMOUSE_H

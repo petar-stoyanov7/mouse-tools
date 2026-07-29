@@ -27,13 +27,13 @@ int main() {
     }
 
     //workaround to run for normal user
-    auto grp = getgrnam("input");
-    if (grp == nullptr) {
+    auto group = getgrnam("input");
+    if (group == nullptr) {
         std::cerr << "get group name failed" << std::endl;
         return 1;
     }
-    int oldgid = getgid();
-    if (setgid(grp->gr_gid) < 0) {
+    int oldGroupId = getgid();
+    if (setgid(group->gr_gid) < 0) {
         std::cerr << "Couldn't change group to input" << std::endl;
         return 1;
     }
@@ -44,7 +44,7 @@ int main() {
         return 1;
     }
 
-    if (setgid(oldgid) < 0) {
+    if (setgid(oldGroupId) < 0) {
         std::cerr << "Couldn't change to old group" << std::endl;
         return 1;
     }
@@ -52,14 +52,14 @@ int main() {
     print_debug("Myshkin initialized...");
 
     int status = 0;
-    auto is_error = [](int v) { return v < 0 && v != -EAGAIN; };
-    auto has_next_event = [](int v) {
+    auto isError = [](int v) { return v < 0 && v != -EAGAIN; };
+    auto hasNextEvent = [](int v) {
         return v >= 0;
     };
     const auto flags = LIBEVDEV_READ_FLAG_NORMAL | LIBEVDEV_READ_FLAG_BLOCKING;
 
-    while (status = libevdev_next_event(mouse.getMouse(), flags, &ev), !is_error(status)) {
-        if (!has_next_event(status)) {
+    while (status = libevdev_next_event(mouse.getMouse(), flags, &ev), !isError(status)) {
+        if (!hasNextEvent(status)) {
             continue;
         }
 

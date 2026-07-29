@@ -8,6 +8,7 @@
 #include "../VirtualDevice/VirtualDevice.h"
 
 extern VirtualDevice v_device;
+void print_debug(const std::string_view message);
 
 class Macro {
 private:

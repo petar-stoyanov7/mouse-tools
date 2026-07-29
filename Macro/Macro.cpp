@@ -48,13 +48,14 @@ void Macro::execute() {
     }
 }
 void Macro::toggleSpam() {
-    std::cout << "toggle spam" << std::endl;
     if (running_) {
+        print_debug("stop spam");
         running_ = false;
         if (thread_.joinable()) {
             thread_.join();
         }
     } else {
+        print_debug("start spam");
         running_ = true;
         if (type == MACRO_TYPE_MOUSE) {
             thread_ = std::thread(&Macro::mouse_spam, this);
@@ -94,7 +95,6 @@ void Macro::keyboard_spam() {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay)); //sleep for X milliseconds
     }
-
 }
 
 void Macro::hold() {

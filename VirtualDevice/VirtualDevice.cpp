@@ -2,7 +2,7 @@
 
 #include <vector>
 VirtualDevice::VirtualDevice() {
-    is_enabled = false;
+    isEnabled = false;
 }
 
 VirtualDevice::VirtualDevice(const std::vector<int> &macroKeys) {
@@ -22,7 +22,7 @@ VirtualDevice::VirtualDevice(const std::vector<int> &macroKeys) {
     }
 
     const int r = libevdev_uinput_create_from_device(dev, LIBEVDEV_UINPUT_OPEN_MANAGED, &m_uinput);
-    is_enabled = (r == 0);
+    isEnabled = (r == 0);
     libevdev_free(dev);
 }
 
@@ -30,9 +30,9 @@ VirtualDevice::~VirtualDevice() {
     libevdev_uinput_destroy(m_uinput);
 }
 
-void VirtualDevice::press(int key, bool is_down) {
+void VirtualDevice::press(int key, bool isDown) {
     std::lock_guard<std::mutex> guard(m_mouseMutex);
-    libevdev_uinput_write_event(m_uinput, EV_KEY, key, is_down);
+    libevdev_uinput_write_event(m_uinput, EV_KEY, key, isDown);
     libevdev_uinput_write_event(m_uinput, EV_SYN, SYN_REPORT, 0);
 }
 

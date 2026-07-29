@@ -21,7 +21,7 @@ public:
     bool hasTrigger(unsigned int key);
     Mouse getMouse();
 private:
-    std::string mouse_name;
+    std::string mouseName;
 };
 
 #endif //MYSHKIN_MYSHCONFIG_H

@@ -24,14 +24,14 @@ Config::Config(std::string path) {
         config = json::parse(f);
         macroData = config["macros"];
 
-        mouse_name = config["mouse"].get<std::string>();
+        mouseName = config["mouse"].get<std::string>();
     } catch (const json::parse_error e) {
         isEnabled = false;
         errorMessage = e.what();
         return;
     }
 
-    std::vector<int> macro_keys;
+    std::vector<int> macroKeys;
     for (int i{0}; i < macroData.size(); ++i) {
         if (!Macro::isValidMacro(macroData[i])) {
             errorMessage = "Invalid macro entry: " + macroData[i].get<std::string>();
@@ -51,11 +51,11 @@ Config::Config(std::string path) {
             )
         );
 
-        macro_keys.push_back(macroData[i]["key"]);
+        macroKeys.push_back(macroData[i]["key"]);
     }
 
     v_device.~VirtualDevice();
-    new(&v_device) VirtualDevice(macro_keys);
+    new(&v_device) VirtualDevice(macroKeys);
 }
 
 bool Config::hasTrigger(unsigned int key) {
@@ -63,5 +63,5 @@ bool Config::hasTrigger(unsigned int key) {
 }
 
 Mouse Config::getMouse() {
-    return Mouse(mouse_name);
+    return Mouse(mouseName);
 }
