@@ -57,14 +57,8 @@ int main() {
     };
     const auto flags = LIBEVDEV_READ_FLAG_NORMAL | LIBEVDEV_READ_FLAG_BLOCKING;
 
-    while (status = libevdev_next_event(mouse.getMouse(), flags, &ev), !isError(status)) {
-        if (!hasNextEvent(status)) {
-            continue;
-        }
-
-        if (ev.type != EV_KEY) {
-            continue;
-        }
+    while (true) {
+        libevdev_next_event(mouse.getMouse(), flags, &ev);
 
         if (ev.type == EV_KEY) {
             //std::cout << "b: " << KEY_A << std::endl; //todo debug message to show key code
@@ -76,6 +70,8 @@ int main() {
                 config.macros[ev.code]->execute();
             }
         }
+
+        usleep(8000); //add throttling to reduce CPU load
     }
 
     mouse.close();
